@@ -67,8 +67,8 @@ func main() {
 
 	// all handlers. lookin funcy casue i have to pass redis handler
 	router := mux.NewRouter().StrictSlash(true)
-	router.HandleFunc("/upload", func(w http.ResponseWriter, r *http.Request) {
-		upload(w, r, client, "tmp")
+	router.HandleFunc("/token", func(w http.ResponseWriter, r *http.Request) {
+		token(w, r, client, "tmp")
 	}).Methods("POST")
 	router.HandleFunc("/{fdata}", func(w http.ResponseWriter, r *http.Request) {
 		handlerdynamic(w, r, client)
@@ -104,7 +104,7 @@ func handlerdynamic(w http.ResponseWriter, r *http.Request, client *redis.Client
 	}
 }
 
-func upload(w http.ResponseWriter, r *http.Request, client *redis.Client, state string) {
+func token(w http.ResponseWriter, r *http.Request, client *redis.Client, state string) {
 	// get file POST from index
 	//fmt.Println("method:", r.Method)
 	r.ParseForm()
