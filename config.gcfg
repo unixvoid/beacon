@@ -1,8 +1,8 @@
 [beacon]
 	port			= 8808
 	tokensize		= 25
-	linktokensize		= 4
-	ttl			= 720
+	linktokensize	= 4
+	ttl				= 720
 	tokendictionary = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 [redis]
 	host			= "localhost"
