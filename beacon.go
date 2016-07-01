@@ -10,16 +10,13 @@ import (
 	"log"
 	"net/http"
 	"strings"
-	"time"
 )
 
 type Config struct {
 	Beacon struct {
 		Port            int
 		TokenSize       int
-		LinkTokenSize   int
 		TokenDictionary string
-		TTL             time.Duration
 	}
 	Redis struct {
 		Host string
@@ -113,7 +110,6 @@ func provision(w http.ResponseWriter, r *http.Request, client *redis.Client, sta
 
 		// if temp objects, set an expire link on them
 		if strings.EqualFold(state, "tmp") {
-			client.Expire(fmt.Sprintf("sec:%x", tokenHash), (config.Beacon.TTL * time.Hour)).Err()
 		}
 	}
 }
