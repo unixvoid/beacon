@@ -3,7 +3,7 @@ GOFLAGS=-a -ldflags '-s'
 CGOR=CGO_ENABLED=0
 VER_NUM=latest
 DOCKER_OPTIONS="--no-cache"
-IMAGE_NAME=docker.io/mfaltys/beacon:$(VER_NUM)
+IMAGE_NAME=docker.io/unixvoid/beacon:$(VER_NUM)
 REDIS_DB_HOST_DIR="/tmp/"
 
 all: beacon
