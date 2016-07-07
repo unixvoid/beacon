@@ -3,13 +3,17 @@ package main
 import (
 	"crypto/rand"
 	"fmt"
+	"io/ioutil"
+	"log"
+	"net/http"
+	"os"
+	"strings"
+
 	"github.com/gorilla/mux"
+	"github.com/unixvoid/glogger"
 	"golang.org/x/crypto/sha3"
 	"gopkg.in/gcfg.v1"
 	"gopkg.in/redis.v3"
-	"log"
-	"net/http"
-	"strings"
 )
 
 type Config struct {
@@ -17,6 +21,7 @@ type Config struct {
 		Port            int
 		TokenSize       int
 		TokenDictionary string
+		Loglevel        string
 	}
 	SSL struct {
 		UseTLS     bool
@@ -40,10 +45,21 @@ func main() {
 		return
 	}
 
+	// init logger
+	if config.Beacon.Loglevel == "debug" {
+		glogger.LogInit(os.Stdout, os.Stdout, os.Stdout, os.Stderr)
+	} else if config.Beacon.Loglevel == "cluster" {
+		glogger.LogInit(os.Stdout, os.Stdout, ioutil.Discard, os.Stderr)
+	} else if config.Beacon.Loglevel == "info" {
+		glogger.LogInit(os.Stdout, ioutil.Discard, ioutil.Discard, os.Stderr)
+	} else {
+		glogger.LogInit(ioutil.Discard, ioutil.Discard, ioutil.Discard, os.Stderr)
+	}
+
 	redisaddr := fmt.Sprint(config.Redis.Host, ":", config.Redis.Port)
 	bitport := fmt.Sprint(":", config.Beacon.Port)
-	println("beacon running on", config.Beacon.Port)
-	println("link to redis on", redisaddr)
+	glogger.Info.Println("beacon running on", config.Beacon.Port)
+	glogger.Info.Println("link to redis on", redisaddr)
 	// initialize redis connection
 	client := redis.NewClient(&redis.Options{
 		Addr:     redisaddr,

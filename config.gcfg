@@ -2,10 +2,11 @@
 	port			= 8808
 	tokensize		= 25
 	tokendictionary = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+	loglevel		= "debug"
 [redis]
 	host			= "localhost"
 	port			= 6379
 [ssl]
 	usetls			= true
-	servercert		= deps/irc.unixvoid.com.bundle.crt
-	serverkey		= deps/irc.unixvoid.com.key
+	servercert		= deps/test.crt
+	serverkey		= deps/test.key
