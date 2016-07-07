@@ -7,17 +7,22 @@ IMAGE_NAME=docker.io/unixvoid/beacon:$(VER_NUM)
 REDIS_DB_HOST_DIR="/tmp/"
 
 all: beacon
+
 beacon: beacon.go
 	$(GOC) beacon.go
+
 deps:
 	go get github.com/gorilla/mux
 	go get golang.org/x/crypto/sha3
 	go get gopkg.in/gcfg.v1
 	go get gopkg.in/redis.v3
+
 run: beacon.go
 	go run beacon.go
+
 stat: beacon.go
 	$(CGOR) $(GOC) $(GOFLAGS) beacon.go
+
 install: stat
 	cp beacon /usr/bin
 
