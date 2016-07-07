@@ -26,3 +26,5 @@ _testmain.go
 
 stage.tmp/
 beacon
+*.crt
+*.key

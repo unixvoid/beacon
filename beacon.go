@@ -18,6 +18,11 @@ type Config struct {
 		TokenSize       int
 		TokenDictionary string
 	}
+	SSL struct {
+		UseTLS     bool
+		ServerCert string
+		ServerKey  string
+	}
 	Redis struct {
 		Host string
 		Port int
@@ -60,7 +65,11 @@ func main() {
 	router.HandleFunc("/{fdata}", func(w http.ResponseWriter, r *http.Request) {
 		handlerdynamic(w, r, client)
 	}).Methods("GET")
-	log.Fatal(http.ListenAndServe(bitport, router))
+	if config.SSL.UseTLS {
+		log.Fatal(http.ListenAndServeTLS(bitport, config.SSL.ServerCert, config.SSL.ServerKey, router))
+	} else {
+		log.Fatal(http.ListenAndServe(bitport, router))
+	}
 }
 
 func handlerdynamic(w http.ResponseWriter, r *http.Request, client *redis.Client) {

@@ -5,3 +5,7 @@
 [redis]
 	host			= "localhost"
 	port			= 6379
+[ssl]
+	usetls			= true
+	servercert		= deps/irc.unixvoid.com.bundle.crt
+	serverkey		= deps/irc.unixvoid.com.key
