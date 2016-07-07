@@ -7,6 +7,7 @@ Documentation
 All documentation is in the [github wiki](https://github.com/unixvoid/beacon/wiki)
 * [Configuration](https://github.com/unixvoid/beacon/wiki/Configuration)
 * [API](https://github.com/unixvoid/beacon/wiki/API)
+* [Redis](https://github.com/unixvoid/beacon/wiki/Redis)
 
 Quickstart
 ==========
