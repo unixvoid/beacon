@@ -12,7 +12,8 @@ A general usage flow is as follows:
 - A user requests a new id with `/provision`
 - A beacon client updates the ip with `/update`
 - Any client can fetch this ip with `/<beacon id>`  
-The service can be run bare on the host or in a docker container
+The service can be run bare on the host or in a [docker
+container](https://hub.docker.com/r/unixvoid/beacon/)
 `unixvoid/beacon`
 
 ### api
@@ -22,7 +23,7 @@ The service can be run bare on the host or in a docker container
 - `/<beacon id>` : `GET` : endpoint for getting a registered ip
   - example: `curl https://beacon.unixvoid.com/unixvoid`
 - `/provision` : `POST` : endpoint for requesting a new beacon id
-  - `id` : the intended ip
+  - `id` : the intended id
   - example: `curl -d id=unixvoid https://beacon.unixvoid.com/provision`
   - returns: `200` : client sec, a alphanumeric string for authorizing/removing
     entries
@@ -36,7 +37,7 @@ The service can be run bare on the host or in a docker container
   - returns: `200` : ip updated successfully
   - returns: `403` : client auth invalid
   - returns: `400` : client id does not exist
-- `/remove` : `POST` : endpoint for remove a registered beacon id and
+- `/remove` : `POST` : endpoint for removing a registered beacon id and
   associating metadata
   - `id` : registered beacon client id
   - `sec` : alphanumeric secret associated with registered beacon id
