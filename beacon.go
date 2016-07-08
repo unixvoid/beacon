@@ -30,8 +30,9 @@ type Config struct {
 		ServerKey  string
 	}
 	Redis struct {
-		Host string
-		Port int
+		Host     string
+		Port     int
+		Password string
 	}
 }
 
@@ -57,16 +58,21 @@ func main() {
 		glogger.LogInit(ioutil.Discard, ioutil.Discard, ioutil.Discard, os.Stderr)
 	}
 
-	// TODO error checking on redis instance (ping)
-	redisaddr := fmt.Sprint(config.Redis.Host, ":", config.Redis.Port)
-	bitport := fmt.Sprint(":", config.Beacon.Port)
-	glogger.Info.Println("link to redis on", redisaddr)
 	// initialize redis connection
+	redisAddr := fmt.Sprint(config.Redis.Host, ":", config.Redis.Port)
 	client := redis.NewClient(&redis.Options{
-		Addr:     redisaddr,
-		Password: "",
+		Addr:     redisAddr,
+		Password: config.Redis.Password,
 		DB:       0,
 	})
+	_, redisErr := client.Ping().Result()
+	if redisErr != nil {
+		glogger.Error.Println("redis connection cannot be made.")
+		glogger.Error.Println("nsproxy will continue to function in passthrough mode only")
+	} else {
+		glogger.Debug.Println("connection to redis succeeded.")
+		glogger.Info.Println("link to redis on", redisAddr)
+	}
 
 	// router routes/handlers
 	router := mux.NewRouter().StrictSlash(true)
@@ -100,7 +106,7 @@ func main() {
 		log.Fatal(tlsServer.ListenAndServeTLS(config.SSL.ServerCert, config.SSL.ServerKey))
 	} else {
 		glogger.Info.Println("beacon running http on", config.Beacon.Port)
-		log.Fatal(http.ListenAndServe(bitport, router))
+		log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", config.Beacon.Port), router))
 	}
 }
 
