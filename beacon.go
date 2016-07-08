@@ -2,6 +2,7 @@ package main
 
 import (
 	"crypto/rand"
+	"crypto/tls"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -56,9 +57,9 @@ func main() {
 		glogger.LogInit(ioutil.Discard, ioutil.Discard, ioutil.Discard, os.Stderr)
 	}
 
+	// TODO error checking on redis instance (ping)
 	redisaddr := fmt.Sprint(config.Redis.Host, ":", config.Redis.Port)
 	bitport := fmt.Sprint(":", config.Beacon.Port)
-	glogger.Info.Println("beacon running on", config.Beacon.Port)
 	glogger.Info.Println("link to redis on", redisaddr)
 	// initialize redis connection
 	client := redis.NewClient(&redis.Options{
@@ -67,7 +68,7 @@ func main() {
 		DB:       0,
 	})
 
-	// all handlers. lookin funcy casue i have to pass redis handler
+	// router routes/handlers
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/provision", func(w http.ResponseWriter, r *http.Request) {
 		provision(w, r, client, "tmp")
@@ -81,9 +82,31 @@ func main() {
 	router.HandleFunc("/{fdata}", func(w http.ResponseWriter, r *http.Request) {
 		handlerdynamic(w, r, client)
 	}).Methods("GET")
+
 	if config.SSL.UseTLS {
-		log.Fatal(http.ListenAndServeTLS(bitport, config.SSL.ServerCert, config.SSL.ServerKey, router))
+		tlsConfig := &tls.Config{
+			MinVersion: tls.VersionTLS12,
+			MaxVersion: tls.VersionTLS12,
+			CipherSuites: []uint16{
+				tls.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
+				tls.TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA,
+				tls.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
+				tls.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,
+				tls.TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,
+				tls.TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,
+				tls.TLS_RSA_WITH_AES_128_CBC_SHA,
+				tls.TLS_RSA_WITH_AES_256_CBC_SHA,
+				tls.TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA,
+				tls.TLS_RSA_WITH_3DES_EDE_CBC_SHA,
+			},
+			PreferServerCipherSuites: true,
+			ClientSessionCache:       tls.NewLRUClientSessionCache(128),
+		}
+		glogger.Info.Println("beacon running https on", config.Beacon.Port)
+		tlsServer := &http.Server{Addr: fmt.Sprintf(":%d", config.Beacon.Port), Handler: router, TLSConfig: tlsConfig}
+		log.Fatal(tlsServer.ListenAndServeTLS(config.SSL.ServerCert, config.SSL.ServerKey))
 	} else {
+		glogger.Info.Println("beacon running http on", config.Beacon.Port)
 		log.Fatal(http.ListenAndServe(bitport, router))
 	}
 }
@@ -97,7 +120,7 @@ func handlerdynamic(w http.ResponseWriter, r *http.Request, client *redis.Client
 
 	val, err := client.Get(fmt.Sprintf("ip:%x", clientIdHash)).Result()
 	if err != nil {
-		log.Printf("data does not exist")
+		glogger.Debug.Printf("data does not exist")
 		w.WriteHeader(http.StatusNotFound)
 		fmt.Fprintf(w, "token not found")
 	} else {
