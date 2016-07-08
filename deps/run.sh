@@ -1,5 +1,5 @@
 #!/bin/sh
-VER_NO="v0.0.1a PRE_RELEASE 1b23d3d91a"
+VER_NO="v0.0.1a PRE_RELEASE:$DIFF"
 
 echo "daemonize yes" > /redis.conf
 echo "dbfilename dump.rdb" >> /redis.conf
