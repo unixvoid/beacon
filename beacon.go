@@ -31,7 +31,6 @@ type Config struct {
 	}
 	Redis struct {
 		Host     string
-		Port     int
 		Password string
 	}
 }
@@ -59,9 +58,8 @@ func main() {
 	}
 
 	// initialize redis connection
-	redisAddr := fmt.Sprint(config.Redis.Host, ":", config.Redis.Port)
 	client := redis.NewClient(&redis.Options{
-		Addr:     redisAddr,
+		Addr:     config.Redis.Host,
 		Password: config.Redis.Password,
 		DB:       0,
 	})
@@ -71,7 +69,7 @@ func main() {
 		glogger.Error.Println("nsproxy will continue to function in passthrough mode only")
 	} else {
 		glogger.Debug.Println("connection to redis succeeded.")
-		glogger.Info.Println("link to redis on", redisAddr)
+		glogger.Info.Println("link to redis on", config.Redis.Host)
 	}
 
 	// router routes/handlers

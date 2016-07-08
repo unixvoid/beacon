@@ -4,8 +4,7 @@
 	tokendictionary = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 	loglevel		= "info"
 [redis]
-	host			= "localhost"
-	port			= 6379
+	host			= "localhost:6379"
 	password		= ""
 [ssl]
 	usetls			= false
