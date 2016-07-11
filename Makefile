@@ -21,8 +21,6 @@ dependencies:
 run:
 	go run beacon/*.go
 
-daemon: bin/beacon &
-
 stat:
 	mkdir -p bin/
 	$(CGOR) $(GOC) $(GOFLAGS) -o bin/beacon beacon/*.go

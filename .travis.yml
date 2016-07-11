@@ -11,5 +11,4 @@ install:
   - make dependencies
 
 script:
-  - make stat daemon
-  - make test
+  - make stat test
