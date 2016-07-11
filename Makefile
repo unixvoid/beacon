@@ -11,11 +11,12 @@ all: beacon
 beacon: beacon.go
 	$(GOC) beacon.go
 
-deps:
+dependencies:
 	go get github.com/gorilla/mux
 	go get golang.org/x/crypto/sha3
 	go get gopkg.in/gcfg.v1
 	go get gopkg.in/redis.v3
+	go get github.com/unixvoid/glogger
 
 run:
 	go run beacon/*.go
