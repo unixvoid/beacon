@@ -17,11 +17,17 @@ deps:
 	go get gopkg.in/gcfg.v1
 	go get gopkg.in/redis.v3
 
-run: beacon.go
-	go run beacon.go
+run:
+	go run beacon/*.go
 
-stat: beacon.go
-	$(CGOR) $(GOC) $(GOFLAGS) beacon.go
+daemon: bin/beacon &
+
+stat:
+	mkdir -p bin/
+	$(CGOR) $(GOC) $(GOFLAGS) -o bin/beacon beacon/*.go
+
+test:
+	go test -v beacon/*.go
 
 install: stat
 	cp beacon /usr/bin
@@ -48,6 +54,6 @@ dockerrun:
 	sudo docker logs -f beacon
 
 clean:
-	rm -f beacon
+	rm -rf bin/
 	rm -rf stage.tmp/
 #CGO_ENABLED=0 go build -a -ldflags '-s' beacon.go

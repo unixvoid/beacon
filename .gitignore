@@ -25,6 +25,6 @@ _testmain.go
 *.prof
 
 stage.tmp/
-beacon
+bin/
 *.crt
 *.key
