@@ -1,0 +1,15 @@
+language: go
+
+go:
+  - 1.5.4
+  - 1.6
+
+services:
+  - redis-server
+
+install:
+  - make dependencies
+
+script:
+  - make stat daemon
+  - make test
