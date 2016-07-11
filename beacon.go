@@ -66,7 +66,7 @@ func main() {
 	_, redisErr := client.Ping().Result()
 	if redisErr != nil {
 		glogger.Error.Println("redis connection cannot be made.")
-		glogger.Error.Println("nsproxy will continue to function in passthrough mode only")
+		os.Exit(1)
 	} else {
 		glogger.Debug.Println("connection to redis succeeded.")
 		glogger.Info.Println("link to redis on", config.Redis.Host)
