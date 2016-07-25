@@ -19,7 +19,12 @@ dependencies:
 	go get github.com/unixvoid/glogger
 
 run:
-	go run beacon/*.go
+	cd beacon && go run \
+	beacon.go \
+	provision.go \
+	remove.go \
+	rotate.go \
+	update.go
 
 stat:
 	mkdir -p bin/
