@@ -39,13 +39,13 @@ install: stat
 docker:
 	$(MAKE) stat
 	mkdir stage.tmp/
-	cp beacon stage.tmp/
+	cp bin/beacon stage.tmp/
 	cp deps/rootfs.tar.gz stage.tmp/
 	cp deps/Dockerfile stage.tmp/
 	sed -i "s/<DIFF>/$(shell git rev-parse HEAD | head -c 10)/g" stage.tmp/Dockerfile
 	chmod +x deps/run.sh
 	cp deps/run.sh stage.tmp/
-	cp config.gcfg stage.tmp/
+	cp beacon/config.gcfg stage.tmp/
 	cd stage.tmp/ && \
 		sudo docker build $(DOCKER_OPTIONS) -t $(IMAGE_NAME) .
 	@echo "$(IMAGE_NAME) built"
@@ -55,7 +55,7 @@ dockerrun:
 		-p 8808:8808 \
 		--name beacon \
 		-v $(REDIS_DB_HOST_DIR):/redisbackup/:rw \
-		mfaltys/beacon
+		unixvoid/beacon
 	sudo docker logs -f beacon
 
 clean:
