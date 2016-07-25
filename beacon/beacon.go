@@ -63,6 +63,9 @@ func main() {
 	router.HandleFunc("/update", func(w http.ResponseWriter, r *http.Request) {
 		update(w, r, client, "tmp")
 	}).Methods("POST")
+	router.HandleFunc("/rotate", func(w http.ResponseWriter, r *http.Request) {
+		rotate(w, r, client, "tmp")
+	}).Methods("POST")
 	router.HandleFunc("/remove", func(w http.ResponseWriter, r *http.Request) {
 		remove(w, r, client, "tmp")
 	}).Methods("POST")
