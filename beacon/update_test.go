@@ -23,7 +23,7 @@ func testUpdate(key0, value0, key1, value1, key2, value2 string) int {
 	r.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	w := httptest.NewRecorder()
 
-	update(w, r, client, "tmp")
+	update(w, r, client)
 	return w.Code
 }
 

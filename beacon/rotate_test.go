@@ -22,7 +22,7 @@ func testRotate(key0, value0, key1, value1 string) (string, int) {
 	r.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	w := httptest.NewRecorder()
 
-	rotate(w, r, client, "tmp")
+	rotate(w, r, client)
 	if w.Code == 200 {
 		return w.Body.String(), w.Code
 	} else {

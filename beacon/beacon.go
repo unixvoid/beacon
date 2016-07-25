@@ -58,16 +58,16 @@ func main() {
 	// router routes/handlers
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/provision", func(w http.ResponseWriter, r *http.Request) {
-		provision(w, r, client, "tmp")
+		provision(w, r, client)
 	}).Methods("POST")
 	router.HandleFunc("/update", func(w http.ResponseWriter, r *http.Request) {
-		update(w, r, client, "tmp")
+		update(w, r, client)
 	}).Methods("POST")
 	router.HandleFunc("/rotate", func(w http.ResponseWriter, r *http.Request) {
-		rotate(w, r, client, "tmp")
+		rotate(w, r, client)
 	}).Methods("POST")
 	router.HandleFunc("/remove", func(w http.ResponseWriter, r *http.Request) {
-		remove(w, r, client, "tmp")
+		remove(w, r, client)
 	}).Methods("POST")
 	router.HandleFunc("/{fdata}", func(w http.ResponseWriter, r *http.Request) {
 		handlerdynamic(w, r, client)

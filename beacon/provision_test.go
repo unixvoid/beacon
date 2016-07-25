@@ -20,7 +20,7 @@ func testProvision(key, value string) (string, int) {
 	r.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	w := httptest.NewRecorder()
 
-	provision(w, r, client, "tmp")
+	provision(w, r, client)
 	if w.Code == 200 {
 		return w.Body.String(), w.Code
 	} else {

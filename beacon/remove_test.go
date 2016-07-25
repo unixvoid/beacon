@@ -21,7 +21,7 @@ func testRemove(key0, value0, key1, value1 string) int {
 	r.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	w := httptest.NewRecorder()
 
-	remove(w, r, client, "tmp")
+	remove(w, r, client)
 	return w.Code
 }
 

@@ -10,7 +10,7 @@ import (
 	"gopkg.in/redis.v3"
 )
 
-func provision(w http.ResponseWriter, r *http.Request, client *redis.Client, state string) {
+func provision(w http.ResponseWriter, r *http.Request, client *redis.Client) {
 	// get file POST from index
 	r.ParseForm()
 	clientId := strings.TrimSpace(r.FormValue("id"))
@@ -43,9 +43,5 @@ func provision(w http.ResponseWriter, r *http.Request, client *redis.Client, sta
 		// done with client, rest is server side
 		// sec:<hashed clientId> : hashed password
 		client.Set(fmt.Sprintf("sec:%x", clientIdHash), fmt.Sprintf("%x", tokenHash), 0).Err()
-
-		// if temp objects, set an expire link on them
-		if strings.EqualFold(state, "tmp") {
-		}
 	}
 }

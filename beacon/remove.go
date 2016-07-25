@@ -9,7 +9,7 @@ import (
 	"gopkg.in/redis.v3"
 )
 
-func remove(w http.ResponseWriter, r *http.Request, client *redis.Client, state string) {
+func remove(w http.ResponseWriter, r *http.Request, client *redis.Client) {
 	// get file POST from index
 	r.ParseForm()
 	clientId := strings.TrimSpace(r.FormValue("id"))
