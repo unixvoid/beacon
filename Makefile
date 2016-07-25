@@ -37,6 +37,7 @@ docker:
 	cp beacon stage.tmp/
 	cp deps/rootfs.tar.gz stage.tmp/
 	cp deps/Dockerfile stage.tmp/
+	sed -i "s/<DIFF>/$(shell git rev-parse HEAD | head -c 10)/g" stage.tmp/Dockerfile
 	chmod +x deps/run.sh
 	cp deps/run.sh stage.tmp/
 	cp config.gcfg stage.tmp/
