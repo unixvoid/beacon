@@ -19,4 +19,4 @@ after_success:
   - make docker
   - docker login -e $DOCKER_EMAIL -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
   - docker tag unixvoid/beacon unixvoid/beacon:develop
-  - docker push unixvoid/beacon
+  - docker push unixvoid/beacon:develop
