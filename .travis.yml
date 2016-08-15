@@ -20,3 +20,4 @@ after_success:
   - docker login -e $DOCKER_EMAIL -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
   - docker tag unixvoid/beacon unixvoid/beacon:develop
   - docker push unixvoid/beacon:develop
+  - curl -i --form sec=$BINDER_SEC --form file=@`ls bin/beacon*` --form path=beacon/ https://cryo.unixvoid.com/upload

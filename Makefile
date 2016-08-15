@@ -5,6 +5,7 @@ VER_NUM=latest
 DOCKER_OPTIONS="--no-cache"
 IMAGE_NAME=docker.io/unixvoid/beacon:$(VER_NUM)
 REDIS_DB_HOST_DIR="/tmp/"
+GIT_HASH=$(shell git rev-parse HEAD | head -c 10)
 
 all: beacon
 
@@ -28,7 +29,7 @@ run:
 
 stat:
 	mkdir -p bin/
-	$(CGOR) $(GOC) $(GOFLAGS) -o bin/beacon beacon/*.go
+	$(CGOR) $(GOC) $(GOFLAGS) -o bin/beacon-$(GIT_HASH)-linux-amd64 beacon/*.go
 
 test:
 	go test -v beacon/*.go
@@ -39,10 +40,10 @@ install: stat
 docker:
 	$(MAKE) stat
 	mkdir stage.tmp/
-	cp bin/beacon stage.tmp/
+	cp bin/beacon* stage.tmp/
 	cp deps/rootfs.tar.gz stage.tmp/
 	cp deps/Dockerfile stage.tmp/
-	sed -i "s/<DIFF>/$(shell git rev-parse HEAD | head -c 10)/g" stage.tmp/Dockerfile
+	sed -i "s/<DIFF>/$(GIT_HASH)/g" stage.tmp/Dockerfile
 	chmod +x deps/run.sh
 	cp deps/run.sh stage.tmp/
 	cp beacon/config.gcfg stage.tmp/
