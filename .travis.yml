@@ -21,3 +21,4 @@ after_success:
   - docker tag unixvoid/beacon unixvoid/beacon:develop
   - docker push unixvoid/beacon:develop
   - curl -i --form sec=$BINDER_SEC --form file=@`ls bin/beacon*` --form path=beacon/ https://cryo.unixvoid.com/upload
+  - curl -i --form sec=$BINDER_SEC --form file=@`ls bin/beacon*` --form filename=beacon-latest-linux-amd64 --form path=beacon/ https://cryo.unixvoid.com/upload
