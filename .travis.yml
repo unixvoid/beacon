@@ -22,3 +22,9 @@ after_success:
   - docker push unixvoid/beacon:develop
   - curl -i --form sec=$BINDER_SEC --form file=@`ls bin/beacon*` --form path=beacon/ https://cryo.unixvoid.com/upload
   - curl -i --form sec=$BINDER_SEC --form file=@`ls bin/beacon*` --form filename=beacon-latest-linux-amd64 --form path=beacon/ https://cryo.unixvoid.com/upload
+  - make clean travisaci
+  - mv beacon.aci beacon-latest-linux-amd64.aci
+  - cp deps/sign.sh . && chmod +x sign.sh
+  - ./sign.sh $GPG_SEC
+  - curl -i --form sec=$BINDER_SEC --form file=@beacon-latest-linux-amd64.aci --form path=rkt/beacon/ https://cryo.unixvoid.com/upload
+  - curl -i --form sec=$BINDER_SEC --form file=@beacon-latest-linux-amd64.aci.asc --form path=rkt/beacon/ https://cryo.unixvoid.com/upload

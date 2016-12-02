@@ -50,6 +50,7 @@ docker:
 	cd stage.tmp/ && \
 		sudo docker build $(DOCKER_OPTIONS) -t $(IMAGE_NAME) .
 	@echo "$(IMAGE_NAME) built"
+
 dockerrun:
 	sudo docker run \
 		-d \
@@ -58,6 +59,38 @@ dockerrun:
 		-v $(REDIS_DB_HOST_DIR):/redisbackup/:rw \
 		unixvoid/beacon
 	sudo docker logs -f beacon
+
+aci:
+	$(MAKE) stat
+	mkdir -p stage.tmp/beacon-layout/rootfs/
+	tar -zxf deps/rootfs.tar.gz -C stage.tmp/beacon-layout/rootfs/
+	cp bin/beacon* stage.tmp/beacon-layout/rootfs/beacon
+	chmod +x deps/run.sh
+	cp deps/run.sh stage.tmp/beacon-layout/rootfs/
+	sed -i "s/<DIFF>/$(GIT_HASH)/g" stage.tmp/beacon-layout/rootfs/run.sh
+	cp beacon/config.gcfg stage.tmp/beacon-layout/rootfs/
+	cp deps/manifest.json stage.tmp/beacon-layout/manifest
+	cd stage.tmp/ && \
+		actool build beacon-layout beacon.aci && \
+		mv beacon.aci ../
+	@echo "beacon.aci built"
+
+travisaci:
+	wget https://github.com/appc/spec/releases/download/v0.8.7/appc-v0.8.7.tar.gz
+	tar -zxf appc-v0.8.7.tar.gz
+	$(MAKE) stat
+	mkdir -p stage.tmp/beacon-layout/rootfs/
+	tar -zxf deps/rootfs.tar.gz -C stage.tmp/beacon-layout/rootfs/
+	cp bin/beacon* stage.tmp/beacon-layout/rootfs/beacon
+	chmod +x deps/run.sh
+	cp deps/run.sh stage.tmp/beacon-layout/rootfs/
+	sed -i "s/<DIFF>/$(GIT_HASH)/g" stage.tmp/beacon-layout/rootfs/run.sh
+	cp beacon/config.gcfg stage.tmp/beacon-layout/rootfs/
+	cp deps/manifest.json stage.tmp/beacon-layout/manifest
+	cd stage.tmp/ && \
+		../appc-v0.8.7/actool build beacon-layout beacon.aci && \
+		mv beacon.aci ../
+	@echo "beacon.aci built"
 
 clean:
 	rm -rf bin/
