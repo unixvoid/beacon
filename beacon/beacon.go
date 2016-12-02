@@ -48,12 +48,15 @@ func main() {
 	// initialize redis connection
 	client, err := initRedisConnection()
 	if err != nil {
-		glogger.Error.Println("redis connection cannot be made.")
-		os.Exit(1)
-	} else {
-		glogger.Debug.Println("connection to redis succeeded.")
-		glogger.Info.Println("link to redis on", config.Redis.Host)
+		glogger.Debug.Println("redis conneciton cannot be made, trying again in 1 second")
+		client, err = initRedisConnection()
+		if err != nil {
+			glogger.Error.Println("redis connection cannot be made.")
+			os.Exit(1)
+		}
 	}
+	glogger.Debug.Println("connection to redis succeeded.")
+	glogger.Info.Println("link to redis on", config.Redis.Host)
 
 	// router routes/handlers
 	router := mux.NewRouter().StrictSlash(true)

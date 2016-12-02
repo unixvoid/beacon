@@ -26,7 +26,7 @@
         {
             "name": "api",
             "protocol": "tcp",
-            "port": 8080
+            "port": 8808
         }
         ],
         "mountPoints": [
