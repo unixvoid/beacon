@@ -29,7 +29,7 @@ func testUpdate(key0, value0, key1, value1, key2, value2 string) int {
 
 func TestCasesUpdate(t *testing.T) {
 	// update on id that does not exist
-	rCode := testUpdate("id", "test.domain", "sec", "reallivetoken", "address", "129.0.0.1")
+	rCode := testUpdate("id", "test.domain", "sec", "reallivetoken", "value", "129.0.0.1")
 	if rCode != 400 {
 		t.Error("expected 400, got", rCode, "on update id that does not exist")
 	}
@@ -41,13 +41,13 @@ func TestCasesUpdate(t *testing.T) {
 	}
 
 	// correct
-	rCode = testUpdate("id", "test.domain", "sec", tdToken, "address", "129.0.0.1")
+	rCode = testUpdate("id", "test.domain", "sec", tdToken, "value", "129.0.0.1")
 	if rCode != 200 {
 		t.Error("expected 200, got", rCode, "on correct update")
 	}
 
 	// wrong auth
-	rCode = testUpdate("id", "test.domain", "sec", "nottherealtoken", "address", "129.0.0.1")
+	rCode = testUpdate("id", "test.domain", "sec", "nottherealtoken", "value", "129.0.0.1")
 	if rCode != 403 {
 		t.Error("expected 403, got", rCode, "on update. wrong auth test")
 	}

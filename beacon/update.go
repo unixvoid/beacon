@@ -14,7 +14,7 @@ func update(w http.ResponseWriter, r *http.Request, client *redis.Client) {
 	r.ParseForm()
 	clientId := strings.TrimSpace(r.FormValue("id"))
 	clientSec := strings.TrimSpace(r.FormValue("sec"))
-	clientAddress := strings.TrimSpace(r.FormValue("address"))
+	clientValue := strings.TrimSpace(r.FormValue("value"))
 
 	// sha3:512 hash the id and sec
 	clientIdHash := sha3.Sum512([]byte(clientId))
@@ -25,9 +25,9 @@ func update(w http.ResponseWriter, r *http.Request, client *redis.Client) {
 	if err != redis.Nil {
 		// id exists, make sure clientSecHash is the same as the stored version
 		if fmt.Sprintf("%x", clientSecHash) == storedSecHash {
-			// client is authed, update clientAddress
+			// client is authed, update clientValue
 			w.WriteHeader(http.StatusOK)
-			client.Set(fmt.Sprintf("ip:%x", clientIdHash), clientAddress, 0).Err()
+			client.Set(fmt.Sprintf("ip:%x", clientIdHash), clientValue, 0).Err()
 		} else {
 			// client auth failed
 			w.WriteHeader(http.StatusForbidden)
