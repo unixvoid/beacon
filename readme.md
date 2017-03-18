@@ -5,11 +5,11 @@ Beacon is a key-value discovery service designed for nsproxy but with global use
 
 Documentation
 =============
-All documentation is in the [github wiki](https://github.com/unixvoid/beacon/wiki)
-* [Configuration](https://github.com/unixvoid/beacon/wiki/Configuration)
-* [API](https://github.com/unixvoid/beacon/wiki/API)
-* [Redis](https://github.com/unixvoid/beacon/wiki/Redis)
-* [SSL](https://github.com/unixvoid/beacon/wiki/SSL)
+All documentation is in the [wiki](https://unixvoid.github.io/beacon_docs/)
+* [API](https://unixvoid.github.io/beacon_docs/api/)
+* [Configuration](https://unixvoid.github.io/beacon_docs/configuration/)
+* [Redis](https://unixvoid.github.io/beacon_docs/redis_data_structures/)
+* [SSL](https://unixvoid.github.io/beacon_docs/ssl_config/)
 
 Quickstart
 ==========
