@@ -28,3 +28,4 @@ stage.tmp/
 bin/
 *.crt
 *.key
+beacon.aci
