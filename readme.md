@@ -1,6 +1,7 @@
 Beacon
 =======
-[![Build Status (Travis)](https://travis-ci.org/unixvoid/beacon.svg?branch=feature%2Ftests)](https://travis-ci.org/unixvoid/beacon)  
+- Regular beacon builds on travis have stopped, to use the project please see the Quickstart section below.
+
 Beacon is an API for storing public key-value pairs. It is available for public
 use at [beacon.unixvoid.com](https://beacon.unixvoid.com). Check out the
 documentation down below to find out how you can register some ID's!
