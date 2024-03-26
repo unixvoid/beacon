@@ -1,5 +1,5 @@
 [beacon]
-	port                = 8808
+	port                = 8809
 	tokensize           = 25
 	tokendictionary     = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 	loglevel            = "info"
